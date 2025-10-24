@@ -2,7 +2,6 @@
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
 
-      <!-- Global loading overlay -->
       <div
           v-if="loading"
           class="absolute inset-0 bg-white/70 flex items-center justify-center z-50"
