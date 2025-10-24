@@ -22,7 +22,7 @@ A modern task management application built with Vue 3 that allows users to creat
 
 1. **Clone the repository**
 ```
-git clone <your-repo-url>
+git clone https://github.com/Hovo11/task-manager-fe.git
 cd task-manager-fe
 ```
 
