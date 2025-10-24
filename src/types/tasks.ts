@@ -1,4 +1,3 @@
-export type TaskStatus = 'Todo' | 'In Progress' | 'Done'
 export type TaskStatusKeys = 'todo' | 'in_progress' | 'done'
 export interface Task {
     id: number

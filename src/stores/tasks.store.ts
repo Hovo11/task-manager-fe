@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import api from '@/api/http'
 import { API } from '@/api/endpoints'
 import type { ApiResponse } from '@/api/types'
-import type {Task, TaskStatusKeys} from "@/types/tasks.ts";
+import type { Task, TaskStatusKeys } from "@/types/tasks.ts";
 
 
 export const useTasksStore = defineStore('tasks', () => {

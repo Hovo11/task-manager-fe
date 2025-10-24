@@ -6,7 +6,7 @@ import type { User } from '@/types/user.type'
 
 export const useUsersStore = defineStore('users', () => {
     const users = ref<User[]>([])
-    const loading = ref(false)
+    const loading = ref(true)
     const error = ref<string | null>(null)
 
     // Fetch all users
@@ -22,6 +22,7 @@ export const useUsersStore = defineStore('users', () => {
                 created_at: u.created_at,
                 updated_at: u.updated_at
             }))
+            loading.value = false
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to fetch users'
             console.error(error.value)

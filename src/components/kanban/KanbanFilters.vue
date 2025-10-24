@@ -6,25 +6,23 @@
         placeholder="Search tasks..."
         class="flex-1 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
     />
+
     <select
         v-model="selectedStatus"
         class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 min-w-[150px]"
     >
       <option value="">All Statuses</option>
-      <option
-          v-for="s in statuses"
-          :key="s.key"
-          :value="s.key"
-      >
+      <option v-for="s in statuses" :key="s.key" :value="s.key">
         {{ s.label }}
       </option>
     </select>
+
     <select
         v-model="selectedUserId"
+        v-if="!loading"
         class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 min-w-[150px]"
-        v-if="users.length"
     >
-      <option value="0">All Users</option>
+      <option value="">All Users</option>
       <option v-for="user in users" :key="user.id" :value="user.id">
         {{ user.name || user.email }}
       </option>
@@ -33,12 +31,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type { TaskStatusKeys } from '@/types/tasks.ts'
-import { useUsersStore } from "@/stores/users.store.ts";
+import { ref, watch, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import type { TaskStatusKeys } from '@/types/tasks'
+import { useUsersStore } from '@/stores/users.store'
 
 const usersStore = useUsersStore()
-const { users } = usersStore
+const { users, loading } = storeToRefs(usersStore)
+const { fetchUsers } = usersStore
 
 interface FilterChangePayload {
   search: string
@@ -73,12 +73,7 @@ watch([search, selectedStatus, selectedUserId], ([newSearch, newStatus, newUserI
   }, 300)
 })
 
-import { onMounted } from 'vue'
-onMounted(() => {
-  emit('filter-change', {
-    search: search.value,
-    status: selectedStatus.value,
-    userId: selectedUserId.value
-  })
+onMounted(async () => {
+  await fetchUsers()
 })
 </script>

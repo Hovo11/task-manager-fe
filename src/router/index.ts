@@ -23,7 +23,6 @@ interface MiddlewareContext {
 const routes: RouteRecordRaw[] = [
     { path: '/login', name: 'Login', component: Login },
     { path: '/403', name: 'Forbidden', component: Forbidden },
-
     {
         path: '/admin',
         component: () => import('@/views/layouts/AdminLayout.vue'),
@@ -32,7 +31,6 @@ const routes: RouteRecordRaw[] = [
         ],
         meta: { middleware: [auth, admin] },
     },
-
     {
         path: '/user',
         component: () => import('@/views/layouts/UserLayout.vue'),
@@ -89,7 +87,6 @@ router.beforeEach((to, from, next) => {
             next('/403')
         }
     }
-
     runMiddleware(0)
 })
 

@@ -54,8 +54,6 @@ const { tasks } = storeToRefs(tasksStore)
 const { fetchTasks } = tasksStore
 const socket = getSocket()
 
-const usersStore = useUsersStore()
-const { fetchUsers } = usersStore
 const taskToDelete = ref<Task | null>(null)
 const showDeleteModal = ref(false)
 
@@ -68,7 +66,6 @@ const filters = ref<{ search: string; status: TaskStatusKeys | '' }>({
 
 onMounted(async () => {
   await fetchTasks()
-  await fetchUsers()
 })
 
 const applyFilters = async (newFilters: typeof filters.value) => {

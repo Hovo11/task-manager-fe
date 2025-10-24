@@ -1,4 +1,3 @@
-<!-- UserLayout.vue -->
 <template>
   <div>
     <Navbar />

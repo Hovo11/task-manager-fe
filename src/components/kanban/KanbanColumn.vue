@@ -7,7 +7,6 @@
         :group="groupConfig"
         item-key="id"
         @change="onDragChange"
-        @end="onDragEnd"
         class="flex-1"
         animation="200"
     >
@@ -29,8 +28,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import TaskCard from './TaskCard.vue'
-import type {Task, TaskStatusKeys} from '@/types/tasks'
-import {computed} from 'vue'
+import type { Task, TaskStatusKeys } from '@/types/tasks'
+import { computed } from 'vue'
 
 const props = defineProps<{
   status: TaskStatusKeys
@@ -42,7 +41,7 @@ const formattedStatus = computed(() => {
     case 'todo': return 'To do'
     case 'in_progress': return 'In progress'
     case 'done': return 'Done'
-    default: return props.status.toUpperCase()
+    default: return props.status?.toUpperCase()
   }
 })
 
@@ -67,11 +66,6 @@ const onDragChange = (event: any) => {
   }
 }
 
-const onDragEnd = (event: any) => {
-  console.log('Drag ended in column:', props.status)
-  console.log('Current tasks:', props.tasks)
-}
-
 const handleTaskClick = (task: Task) => {
   emit('task-click', task)
 }
@@ -79,4 +73,5 @@ const handleTaskClick = (task: Task) => {
 const handleTaskDelete = (task: Task) => {
   emit('task-delete', task)
 }
+
 </script>

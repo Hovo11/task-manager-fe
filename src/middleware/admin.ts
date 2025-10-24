@@ -6,6 +6,5 @@ export const admin: Middleware = ({ next }) => {
     if (auth.user && auth.user.role !== 'admin') {
         return next('/403')
     }
-    console.log('ad')
     return next()
 }

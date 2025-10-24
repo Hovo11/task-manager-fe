@@ -57,7 +57,6 @@ const onSubmit = async () => {
       alert('Please enter email and password')
       return
     }
-
     await auth.login(form)
     router.push(auth.role === 'admin' ? '/' : '/profile')
   } catch (err: any) {
