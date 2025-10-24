@@ -33,18 +33,14 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { TaskStatusKeys } from '@/types/tasks'
+import type { TaskStatusKeys, FilterChangePayload } from '@/types/tasks'
 import { useUsersStore } from '@/stores/users.store'
 
 const usersStore = useUsersStore()
 const { users, loading } = storeToRefs(usersStore)
 const { fetchUsers } = usersStore
 
-interface FilterChangePayload {
-  search: string
-  status: TaskStatusKeys | ''
-  userId: number | null
-}
+
 
 const emit = defineEmits<{
   (e: 'filter-change', filters: FilterChangePayload): void

@@ -9,3 +9,9 @@ export interface Task {
     end_time?: string
     socketId?: string | number
 }
+
+export interface FilterChangePayload {
+    search: string
+    status: TaskStatusKeys | ''
+    userId: number | null
+}

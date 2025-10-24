@@ -14,26 +14,36 @@
       </h2>
 
       <div class="space-y-4" v-if="!loading">
-        <input
-            v-model="localTask.title"
-            placeholder="Title"
-            class="w-full border px-3 py-2 rounded"
-        />
-        <textarea
-            v-model="localTask.description"
-            placeholder="Description"
-            class="w-full border px-3 py-2 rounded"
-        />
-        <select
-            id="user"
-            v-model="localTask.userId"
-            class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
-        >
-          <option value="0" disabled>Select a user</option>
-          <option v-for="user in users" :key="user.id" :value="user.id">
-            {{ user.name || user.email }}
-          </option>
-        </select>
+        <div>
+          <input
+              v-model="localTask.title"
+              placeholder="Title"
+              class="w-full border px-3 py-2 rounded"
+          />
+          <p v-if="errors.title" class="text-red-500 text-sm mt-1">{{ errors.title }}</p>
+        </div>
+
+        <div>
+          <textarea
+              v-model="localTask.description"
+              placeholder="Description"
+              class="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
+        <div>
+          <select
+              id="user"
+              v-model="localTask.userId"
+              class="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
+          >
+            <option value="0" disabled>Select a user</option>
+            <option v-for="user in users" :key="user.id" :value="user.id">
+              {{ user.name || user.email }}
+            </option>
+          </select>
+          <p v-if="errors.userId" class="text-red-500 text-sm mt-1">{{ errors.userId }}</p>
+        </div>
 
         <select v-model="localTask.status" class="w-full border px-3 py-2 rounded">
           <option value="todo">To do</option>
@@ -92,6 +102,9 @@ const emptyTask: Task = {
 
 const localTask = ref<Task>({ ...emptyTask })
 
+// --- Reactive error messages ---
+const errors = ref<{ title?: string; userId?: string }>({})
+
 watch(
     () => props.task,
     (newTask) => {
@@ -100,6 +113,7 @@ watch(
       } else {
         localTask.value = { ...emptyTask }
       }
+      errors.value = {} // reset errors when task changes
     },
     { immediate: true, deep: true }
 )
@@ -127,11 +141,25 @@ const formattedEndTime = computed({
   set: val => localTask.value.end_time = val
 })
 
-const saveTask = () => {
+const validateTask = () => {
+  errors.value = {}
+  let isValid = true
+
   if (!localTask.value.title.trim()) {
-    alert('Title is required')
-    return
+    errors.value.title = 'Title is required'
+    isValid = false
   }
+
+  if (!localTask.value.userId || localTask.value.userId === 0) {
+    errors.value.userId = 'Assignee is required'
+    isValid = false
+  }
+
+  return isValid
+}
+
+const saveTask = () => {
+  if (!validateTask()) return
   emit('save', { ...localTask.value })
 }
 </script>
