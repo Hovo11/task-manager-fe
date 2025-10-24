@@ -4,13 +4,23 @@
   >
     <!-- Title and status -->
     <div class="flex justify-between items-start mb-2">
-      <h3 class="font-semibold text-gray-800 text-base">{{ task.title }}</h3>
-      <span
-          :class="statusClasses"
-          class="text-xs font-medium px-2 py-1 rounded-full"
-      >
-        {{ statusLabel }}
-      </span>
+      <h3 class="font-semibold text-gray-800 text-base" @click="$emit('click')">
+        {{ task.title }}
+      </h3>
+      <div class="flex items-center space-x-2">
+        <span
+            :class="statusClasses"
+            class="text-xs font-medium px-2 py-1 rounded-full"
+        >
+          {{ statusLabel }}
+        </span>
+        <button
+            class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 rounded"
+            @click.stop="$emit('delete')"
+        >
+          Delete
+        </button>
+      </div>
     </div>
 
     <!-- Description -->
@@ -32,27 +42,19 @@ const props = defineProps<{ task: Task }>()
 
 const statusLabel = computed(() => {
   switch (props.task.status) {
-    case 'todo':
-      return 'To Do'
-    case 'in_progress':
-      return 'In Progress'
-    case 'done':
-      return 'Done'
-    default:
-      return props.task.status.toUpperCase()
+    case 'todo': return 'To Do'
+    case 'in_progress': return 'In Progress'
+    case 'done': return 'Done'
+    default: return props.task.status.toUpperCase()
   }
 })
 
 const statusClasses = computed(() => {
   switch (props.task.status) {
-    case 'todo':
-      return 'bg-blue-100 text-blue-800'
-    case 'in_progress':
-      return 'bg-yellow-100 text-yellow-800'
-    case 'done':
-      return 'bg-green-100 text-green-800'
-    default:
-      return 'bg-gray-100 text-gray-800'
+    case 'todo': return 'bg-blue-100 text-blue-800'
+    case 'in_progress': return 'bg-yellow-100 text-yellow-800'
+    case 'done': return 'bg-green-100 text-green-800'
+    default: return 'bg-gray-100 text-gray-800'
   }
 })
 

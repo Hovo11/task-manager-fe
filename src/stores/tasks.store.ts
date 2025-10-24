@@ -76,5 +76,18 @@ export const useTasksStore = defineStore('tasks', () => {
         }
     }
 
-    return { tasks, loading, error, fetchTasks, createTask, updateTask, updateTaskStatus }
+    async function deleteTask(taskId: number) {
+        try {
+            const { data } = await api.delete<ApiResponse<null>>(`/tasks/${taskId}`)
+
+            if (data) {
+                tasks.value = tasks.value.filter(t => t.id !== taskId)
+            }
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Failed to delete task'
+            console.error(error.value)
+        }
+    }
+
+    return { tasks, loading, error, fetchTasks, createTask, updateTask, updateTaskStatus, deleteTask }
 })

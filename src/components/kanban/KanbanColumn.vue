@@ -15,6 +15,7 @@
         <TaskCard
             :task="element"
             @click="handleTaskClick(element)"
+            @delete="handleTaskDelete(element)"
         />
       </template>
 
@@ -38,14 +39,10 @@ const props = defineProps<{
 
 const formattedStatus = computed(() => {
   switch (props.status) {
-    case 'todo':
-      return 'To do'
-    case 'in_progress':
-      return 'In progress'
-    case 'done':
-      return 'Done'
-    default:
-      return props.status.toUpperCase()
+    case 'todo': return 'To do'
+    case 'in_progress': return 'In progress'
+    case 'done': return 'Done'
+    default: return props.status.toUpperCase()
   }
 })
 
@@ -58,6 +55,7 @@ const groupConfig = computed(() => ({
 const emit = defineEmits<{
   (e: 'update:tasks', payload: { status: TaskStatusKeys; tasks: Task[] }): void
   (e: 'task-click', task: Task): void
+  (e: 'task-delete', task: Task): void
 }>()
 
 const onDragChange = (event: any) => {
@@ -76,5 +74,9 @@ const onDragEnd = (event: any) => {
 
 const handleTaskClick = (task: Task) => {
   emit('task-click', task)
+}
+
+const handleTaskDelete = (task: Task) => {
+  emit('task-delete', task)
 }
 </script>
